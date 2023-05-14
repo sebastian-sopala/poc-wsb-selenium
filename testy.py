@@ -8,7 +8,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from HomePageSelectors import HomePageSelectors
 
 
-
 class TheTest(unittest.TestCase):
 
     def setUp(self):
@@ -17,9 +16,8 @@ class TheTest(unittest.TestCase):
         # self.driver.maximize_window()
         self.driver.get(url="https://www.goal.com/")
 
-
-
     def tearDown(self):
+        self.driver.close()
         self.driver.quit()
 
 
@@ -31,17 +29,33 @@ class TheTest(unittest.TestCase):
 
 
         top_nav_list = self.driver.find_elements(By.XPATH, HomePageSelectors.top_nav_list)
-
         print(len(top_nav_list))
 
 
         scores_btn = self.driver.find_element(By.XPATH, HomePageSelectors.scores_btn)
-        # scores_btn = self.driver.find_element(HomePageSelectors.scores_btn)
         scores_btn.click()
 
         scores_header = self.driver.find_element(By.XPATH, HomePageSelectors.scores_header)
-        # scores_header = self.driver.find_element(HomePageSelectors.scores_header)
         self.assertTrue(scores_header. is_displayed)
+
+
+
+        # Get scroll height
+        last_height = self.driver.execute_script("return document.body.scrollHeight")
+
+        while True:
+            # Scroll down to bottom
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+            # Wait to load page
+            sleep(1)
+
+            # Calculate new scroll height and compare with last scroll height
+            new_height = self.driver.execute_script("return document.body.scrollHeight")
+            if new_height == last_height:
+                break
+            last_height = new_height
+
 
 
 

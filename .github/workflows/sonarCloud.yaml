@@ -1,5 +1,6 @@
 name: SonarCloud
 
+on: workflow_dispatch
 on:
   push:
     branches:
@@ -7,8 +8,7 @@ on:
   pull_request:
     branches:
       - main
-  event: 
-    workflow_dispatch
+
 
 jobs:
   test:

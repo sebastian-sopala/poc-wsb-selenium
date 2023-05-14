@@ -25,11 +25,11 @@ jobs:
 
     - name: Run SonarQube analysis
       env:
-        SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKKEN }}
+        SONAR_TOKEN: ${{ secrets.SONER_CLOUD_TOKEN }}
       run: |
         sonar-scanner \
           -Dsonar.projectKey='sebastian-sopala_poc-wsb-selenium' \
           -Dsonar.organization='sebastian-sopala' \
           -Dsonar.python.coverage.reportPaths=coverage.xml \
           -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=$SONAR_CLOUD_TOKKEN
+          -Dsonar.login=$SONER_CLOUD_TOKEN

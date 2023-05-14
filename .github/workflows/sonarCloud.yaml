@@ -26,7 +26,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKKEN }}
       run: |
         sonar-scanner \
-          -Dsonar.projectKey='sebastian-sopala_workflows' \
+          -Dsonar.projectKey='sebastian-sopala_poc-wsb-selenium' \
           -Dsonar.organization='sebastian-sopala' \
           -Dsonar.sources='app/' \
           -Dsonar.tests='tests/' \

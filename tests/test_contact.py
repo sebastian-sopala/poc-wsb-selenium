@@ -1,4 +1,3 @@
-from logging import log
 import unittest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -17,20 +16,19 @@ class Contact(unittest.TestCase):
     def tearDown(self):
         self.driver.close()
 
-
     def test_close_form_with_close_button(self):
-        contact_link = self.driver.find_element(By.XPATH, '//a[@class="nav-link" and text()="Contact"]')
+        contact_link = self.driver.find_element(By.XPATH, '//a[text()="Contact"]')
         close_btn = self.driver.find_element(By.XPATH, '//div[@id="exampleModal"]//button[text()="Close"]')
         contact_modal = self.driver.find_element(By.XPATH, '//div[@class="modal fade"] [@id="exampleModal"]')
-        
+
         contact_link.click()
+
         sleep(1)
         self.assertTrue(contact_modal.get_attribute("class").split().__contains__("show"))
 
         close_btn.click()
         sleep(1)
         self.assertFalse(contact_modal.get_attribute("class").split().__contains__("show"))
-
 
     def test_close_form_with_X_button(self):
         contact_link = self.driver.find_element(By.XPATH, '//a[@class="nav-link" and text()="Contact"]')
@@ -39,11 +37,11 @@ class Contact(unittest.TestCase):
         sleep(1)
         self.assertTrue(contact_modal.get_attribute("class").split().__contains__("show"))
 
-        x_btn = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//div[@id="exampleModal"]//div[@class="modal-header"]/button/span[text()="×"]')))
+        x_btn = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(
+            (By.XPATH, '//div[@id="exampleModal"]//div[@class="modal-header"]/button/span[text()="×"]')))
         x_btn.click()
         sleep(1)
         self.assertFalse(contact_modal.get_attribute("class").split().__contains__("show"))
-
 
     def test_sucefully_send_message(self):
         contact_link = self.driver.find_element(By.XPATH, '//a[@class="nav-link" and text()="Contact"]')
@@ -73,29 +71,6 @@ class Contact(unittest.TestCase):
         self.assertTrue(alert)
         alert.accept()
 
-
-
-
-
-
-
-        # consent = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(HomePageSelectors.accept_consent_btn))
-        # consent.click()
-        # sleep(1) # TODO - change this
-        # # WebDriverWait(self.driver, 10).until_not(EC.staleness_of(self.driver.find_element(By.CLASS_NAME, "dupa")))
-
-        # top_nav_list = self.driver.find_elements(By.XPATH, HomePageSelectors.top_nav_list)
-        # print(len(top_nav_list))
-
-        # scores_btn = self.driver.find_element(By.XPATH, HomePageSelectors.scores_btn)
-        # scores_btn.click()
-
-        # scores_header = self.driver.find_element(By.XPATH, HomePageSelectors.scores_header)
-        # self.assertTrue(scores_header. is_displayed)
-
-        # # Get scroll height
-        # last_height = self.driver.execute_script("return document.body.scrollHeight")
-
         # while True:
         #     # Scroll down to bottom
         #     self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -108,8 +83,6 @@ class Contact(unittest.TestCase):
         #     if new_height == last_height:
         #         break
         #     last_height = new_height
-
-
 
 
 if __name__ == "__main__":

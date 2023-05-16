@@ -1,22 +1,17 @@
 from logging import log
 import unittest
-import pytest
 from selenium import webdriver
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from time import sleep
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from HomePageSelectors import HomePageSelectors
 from selenium.webdriver.common.alert import Alert
 
 
-class TheTest(unittest.TestCase):
+class Contact(unittest.TestCase):
 
     def setUp(self):
         self.driver = webdriver.Firefox()
-        self.driver.implicitly_wait(3)
-        # self.driver.maximize_window()
         self.driver.get(url="https://www.demoblaze.com/")
 
     def tearDown(self):
@@ -25,37 +20,33 @@ class TheTest(unittest.TestCase):
 
     def test_close_form_with_close_button(self):
         contact_link = self.driver.find_element(By.XPATH, '//a[@class="nav-link" and text()="Contact"]')
-        close_btn = self.driver.find_element(By.XPATH, '//*[text()="Close"]')
-        modal_open = self.driver.find_element(By.XPATH, '//div[@class="modal fade"] [@id="exampleModal"]')
+        close_btn = self.driver.find_element(By.XPATH, '//div[@id="exampleModal"]//button[text()="Close"]')
+        contact_modal = self.driver.find_element(By.XPATH, '//div[@class="modal fade"] [@id="exampleModal"]')
         
-
         contact_link.click()
         sleep(1)
-        self.assertTrue(modal_open.get_attribute("class").split().__contains__("show"))
+        self.assertTrue(contact_modal.get_attribute("class").split().__contains__("show"))
 
         close_btn.click()
         sleep(1)
-        self.assertFalse(modal_open.get_attribute("class").split().__contains__("show"))
+        self.assertFalse(contact_modal.get_attribute("class").split().__contains__("show"))
 
 
     def test_close_form_with_X_button(self):
         contact_link = self.driver.find_element(By.XPATH, '//a[@class="nav-link" and text()="Contact"]')
-        modal_open = self.driver.find_element(By.XPATH, '//div[@class="modal fade"] [@id="exampleModal"]')
-
+        contact_modal = self.driver.find_element(By.XPATH, '//div[@class="modal fade"] [@id="exampleModal"]')
         contact_link.click()
         sleep(1)
-        self.assertTrue(modal_open.get_attribute("class").split().__contains__("show"))
+        self.assertTrue(contact_modal.get_attribute("class").split().__contains__("show"))
 
         x_btn = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//div[@id="exampleModal"]//div[@class="modal-header"]/button/span[text()="×"]')))
-
         x_btn.click()
         sleep(1)
-        self.assertFalse(modal_open.get_attribute("class").split().__contains__("show"))
+        self.assertFalse(contact_modal.get_attribute("class").split().__contains__("show"))
+
 
     def test_sucefully_send_message(self):
         contact_link = self.driver.find_element(By.XPATH, '//a[@class="nav-link" and text()="Contact"]')
-        modal_open = self.driver.find_element(By.XPATH, '//div[@class="modal fade"] [@id="exampleModal"]')
-
         contact_link.click()
         sleep(1)
 

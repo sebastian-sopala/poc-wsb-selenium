@@ -1,17 +1,17 @@
-## Test Project
+# Test Project
 
 # Selenium+Python
 
 - GHA moze
 - Test management tool moze
 
-## do testowania
+# do testowania
 - HomePage
 - Cart
 - SignUp / LogIn
 - Video / FullScreen / Different resolutions
 
-# HomePage
+## HomePage
 - filtrowanie ???
 - contact
     - form open

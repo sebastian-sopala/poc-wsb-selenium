@@ -18,7 +18,7 @@ class AboutUs(unittest.TestCase):
     def tearDown(self):
         self.driver.close()
 
-    @pytest.mark.skip()
+
     def test_close_form_with_close_button(self):
         about_us_link = self.driver.find_element(By.XPATH, '//a[text()="About us"]')
         video_modal = self.driver.find_element(By.XPATH, '//div[@class="modal fade"] [@id="videoModal"]')
@@ -32,7 +32,7 @@ class AboutUs(unittest.TestCase):
         sleep(1)
         self.assertFalse(video_modal.get_attribute("class").split().__contains__("show"))
 
-    @pytest.mark.skip()
+
     def test_close_form_with_X_button(self):
         about_us_link = self.driver.find_element(By.XPATH, '//a[text()="About us"]')
         video_modal = self.driver.find_element(By.XPATH, '//div[@class="modal fade"] [@id="videoModal"]')

@@ -20,7 +20,7 @@ class Home(unittest.TestCase):
     def test_home_link(self):
         cart_link = self.driver.find_element(By.XPATH, '//a[text()="Cart"]')
 
-        # there is abug on sitw when open "https://www.demoblaze.com/cart.html" directly
+        # there is abug on site when open "https://www.demoblaze.com/cart.html" directly
         cart_link.click()
         sleep(1)
         place_order_btn = WebDriverWait(self.driver, 10).until(

@@ -6,6 +6,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.alert import Alert
 
+from Pages.home_page import HomePage
+
 
 class Contact(unittest.TestCase):
 
@@ -17,11 +19,12 @@ class Contact(unittest.TestCase):
         self.driver.close()
 
     def test_close_form_with_close_button(self):
-        contact_link = self.driver.find_element(By.XPATH, '//a[text()="Contact"]')
+        # contact_link = self.driver.find_element(HomePage.CONTACT_LINK)
         close_btn = self.driver.find_element(By.XPATH, '//div[@id="exampleModal"]//button[text()="Close"]')
         contact_modal = self.driver.find_element(By.XPATH, '//div[@class="modal fade"] [@id="exampleModal"]')
 
-        contact_link.click()
+        # contact_link.click()
+        HomePage.open_contact(self,)
 
         sleep(1)
         self.assertTrue(contact_modal.get_attribute("class").split().__contains__("show"))

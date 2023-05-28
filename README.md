@@ -1,5 +1,10 @@
-## Test Project
+# Test Project
 
+## Run tests
+### linux
+```shell
+pytest -v Tests/
+```
 ## Selenium+Python
 
 - GHA moze

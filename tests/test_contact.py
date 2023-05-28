@@ -1,12 +1,10 @@
 import unittest
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 from time import sleep
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.alert import Alert
-
 from Pages.home_page import HomePage
+
+from Pages.contact_page import ContactPage
 
 
 class Contact(unittest.TestCase):
@@ -19,73 +17,58 @@ class Contact(unittest.TestCase):
         self.driver.close()
 
     def test_close_form_with_close_button(self):
-        # contact_link = self.driver.find_element(HomePage.CONTACT_LINK)
-        close_btn = self.driver.find_element(By.XPATH, '//div[@id="exampleModal"]//button[text()="Close"]')
-        contact_modal = self.driver.find_element(By.XPATH, '//div[@class="modal fade"] [@id="exampleModal"]')
+        # TODO can i refactor this boilerplate
+        contact_page = ContactPage(self.driver)
+        home_page = HomePage(self.driver)
 
-        # contact_link.click()
-        HomePage.open_contact(self,)
+        home_page.open_contact()
+        sleep(1)  # TODO remove this
+        contact_page.assert_modal_is_displayed()
 
+        contact_page.click_close_button()
         sleep(1)
-        self.assertTrue(contact_modal.get_attribute("class").split().__contains__("show"))
-
-        close_btn.click()
-        sleep(1)
-        self.assertFalse(contact_modal.get_attribute("class").split().__contains__("show"))
+        contact_page.assert_modal_is_not_displayed()
 
     def test_close_form_with_X_button(self):
-        contact_link = self.driver.find_element(By.XPATH, '//a[@class="nav-link" and text()="Contact"]')
-        contact_modal = self.driver.find_element(By.XPATH, '//div[@class="modal fade"] [@id="exampleModal"]')
-        contact_link.click()
-        sleep(1)
-        self.assertTrue(contact_modal.get_attribute("class").split().__contains__("show"))
+        contact_page = ContactPage(self.driver)
+        home_page = HomePage(self.driver)
 
-        x_btn = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(
-            (By.XPATH, '//div[@id="exampleModal"]//div[@class="modal-header"]/button/span[text()="×"]')))
-        x_btn.click()
+        home_page.open_contact()
         sleep(1)
-        self.assertFalse(contact_modal.get_attribute("class").split().__contains__("show"))
+        contact_page.assert_modal_is_displayed()
 
-    def test_sucefully_send_message(self):
-        contact_link = self.driver.find_element(By.XPATH, '//a[@class="nav-link" and text()="Contact"]')
-        contact_link.click()
+        contact_page.click_x_icon()
         sleep(1)
+        contact_page.assert_modal_is_not_displayed()
 
-        email_field = self.driver.find_element(By.XPATH, '//*[@id="recipient-email"]')
-        email_field.send_keys("test@wsb.pl")
+    def test_successfully_send_message(self):
+        contact_page = ContactPage(self.driver)
+        home_page = HomePage(self.driver)
+
+        home_page.open_contact()
         sleep(1)
 
-        name_field = self.driver.find_element(By.XPATH, '//*[@id="recipient-name"]')
-        name_field.send_keys("Bob")
+        text_email = "test@wsb.pl"
+        contact_page.input_text(text_email, contact_page.contact_email_field)
         sleep(1)
 
-        message_field = self.driver.find_element(By.XPATH, '//*[@id="message-text"]')
-        message_field.send_keys("Uncle Bob testing the form !!!")
+        text_name = "Bob"
+        contact_page.input_text(text_name, contact_page.contact_name_field)
         sleep(1)
 
-        send_btn = self.driver.find_element(By.XPATH, '//*[text()="Send message"]')
-        send_btn.click()
+        text_message = "Uncle Bob testing the form !!!"
+        contact_page.input_text(text_message, contact_page.contact_message_field)
+        sleep(1)
+
+        contact_page.click_send_button()
         sleep(1)
 
         alert = Alert(self.driver)
 
-        # alert2 = self.driver.switch_to.alert  ????????
-
+        # TODO assertTrue ??
         self.assertTrue(alert)
+        self.assertEquals(alert.text, "Thanks for the message!!")
         alert.accept()
-
-        # while True:
-        #     # Scroll down to bottom
-        #     self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-        #     # Wait to load page
-        #     sleep(1)
-
-        #     # Calculate new scroll height and compare with last scroll height
-        #     new_height = self.driver.execute_script("return document.body.scrollHeight")
-        #     if new_height == last_height:
-        #         break
-        #     last_height = new_height
 
 
 if __name__ == "__main__":

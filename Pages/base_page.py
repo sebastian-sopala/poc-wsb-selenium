@@ -1,3 +1,4 @@
+import unittest
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -5,9 +6,10 @@ from selenium.webdriver.support import expected_conditions as EC
 """it contains generic methods and utilities"""
 
 
-class BasePage:
+class BasePage(unittest.TestCase):
 
     def __init__(self, driver):
+        super().__init__()
         self.driver = driver
 
     def click_on(self, locator):

@@ -1,9 +1,8 @@
 import unittest
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 from time import sleep
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from Pages.home_page import HomePage
+from Pages.about_us_page import AboutUsPage
 
 
 class AboutUs(unittest.TestCase):
@@ -16,42 +15,38 @@ class AboutUs(unittest.TestCase):
         self.driver.close()
 
     def test_close_form_with_close_button(self):
-        about_us_link = self.driver.find_element(By.XPATH, '//a[text()="About us"]')
-        video_modal = self.driver.find_element(By.XPATH, '//div[@class="modal fade"] [@id="videoModal"]')
-        close_btn = self.driver.find_element(By.XPATH, '//div[@id="videoModal"]//button[text()="Close"]')
+        # TODO can i refactor this boilerplate
+        about_us_page = AboutUsPage(self.driver)
+        home_page = HomePage(self.driver)
 
-        about_us_link.click()
+        home_page.open_about_us()
         sleep(1)
-        self.assertTrue(video_modal.get_attribute("class").split().__contains__("show"))
+        about_us_page.assert_modal_is_displayed()
 
-        close_btn.click()
+        about_us_page.click_close_button()
         sleep(1)
-        self.assertFalse(video_modal.get_attribute("class").split().__contains__("show"))
+        about_us_page.assert_modal_is_not_displayed()
 
     def test_close_form_with_X_button(self):
-        about_us_link = self.driver.find_element(By.XPATH, '//a[text()="About us"]')
-        video_modal = self.driver.find_element(By.XPATH, '//div[@class="modal fade"] [@id="videoModal"]')
+        about_us_page = AboutUsPage(self.driver)
+        home_page = HomePage(self.driver)
 
-        about_us_link.click()
+        home_page.open_about_us()
         sleep(1)
-        self.assertTrue(video_modal.get_attribute("class").split().__contains__("show"))
+        about_us_page.assert_modal_is_displayed()
 
-        x_btn = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(
-            (By.XPATH, '//div[@id="videoModal"]//div[@class="modal-header"]/button/span[text()="×"]')))
-        x_btn.click()
+        about_us_page.click_x_icon()
         sleep(1)
-        self.assertFalse(video_modal.get_attribute("class").split().__contains__("show"))
+        about_us_page.assert_modal_is_not_displayed()
 
     def test_video_is_playing(self):
-        about_us_link = self.driver.find_element(By.XPATH, '//a[text()="About us"]')
+        about_us_page = AboutUsPage(self.driver)
+        home_page = HomePage(self.driver)
 
-        about_us_link.click()
+        home_page.open_about_us()
         sleep(1)
+        about_us_page.assert_video_is_paused()
 
-        video_player = self.driver.find_element(By.XPATH, '//*[@id="example-video"]')
-        self.assertTrue(video_player.get_attribute("class").split().__contains__("vjs-paused"))
-
-        play_btn = self.driver.find_element(By.XPATH, '//button[@title="Play Video"]')
+        about_us_page.play_video()
         sleep(1)
-        play_btn.click()
-        self.assertTrue(video_player.get_attribute("class").split().__contains__("vjs-playing"))
+        about_us_page.assert_video_is_playing()
